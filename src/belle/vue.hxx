@@ -58,8 +58,8 @@ namespace belle::vue {
 
         mstch::map m;
         pre::fusion::for_each_member(elem.get_proxied(), [&](const char* n, const auto& v) {
-            std::cout << "adding to map :" << n << " -- " << v.get_proxied() << std::endl;
-          m.insert_or_assign(n, v.get_proxied()); //TODO: here we have to forward to another observer : templateable_dom_observer instead of passing get_proxied().
+            std::cout << "adding to map :" << n << " -- " << std::to_string(v.get_proxied()) << std::endl;
+          m.insert_or_assign(n, std::to_string(v.get_proxied())); //TODO: here we have to forward to another observer : templateable_dom_observer instead of passing get_proxied().
         });
 
         new_child.innerHTML(mstch::render(tpl_html, m));
