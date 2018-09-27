@@ -1,0 +1,5 @@
+{
+  "nxxm/js-bind" : { "@" : "v0.0.2" }
+  , "cpp-pre/json" : { "@" : "v2.0.1" }
+  , "nxxm/mstch" : { "@" : "1.0.3", "requires" : { "platform" : ["Boost::+boost"] } } 
+}

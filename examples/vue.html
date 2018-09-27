@@ -1,0 +1,69 @@
+<!doctype html>                                                                               
+<html>                                                                           
+<head>                                                                                        
+  <meta charset="utf-8">                                                                    
+</head>
+<body>
+
+  <!-- application UI -->
+  <div id="app_div">
+    <ul>
+      <li v-for="products">
+        {{name}} : {{quantity}}
+      </li>
+    </ul>
+    <button id="btn_add">add</button>
+  </div>
+
+  <!-- application source code -->
+  <script type="text/c++">
+
+    #include <belle/vue.hxx>
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+
+    struct product {
+      std::string name;
+      std::string quantity;
+    };
+
+    struct our_datamodel {
+      std::vector<product> products;
+    };
+
+    BELLE_VUE_OBSERVABLE(product, name, quantity);
+    BELLE_VUE_OBSERVABLE(our_datamodel, products);
+
+
+    using namespace std::placeholders;
+    using namespace std::string_literals;
+
+    struct page {
+      void main() {
+
+        auto btn_add = belle::vue::get_element_by_id("btn_add");
+
+        btn_add.val_.set("onclick", js::bind([&](emscripten::val event) {
+          std::cout << "clicked " << std::endl;
+          our_datamodel_->products->push_back(belle::vue::observable<product>{"a new stuff", "5"});
+        }, _1));
+
+      }
+
+      belle::vue::observable<our_datamodel> our_datamodel_;
+      belle::vue::app<our_datamodel> vue_{"app_div", our_datamodel_};
+    };
+
+    static std::shared_ptr<page> app_;
+
+    int main(int argc, char** argv) {
+      app_ = std::make_shared<page>();
+      app_->main();
+      return 0;
+    }
+    
+  </script>
+</body>
+</html>

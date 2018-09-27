@@ -1,0 +1,36 @@
+<!doctype html>                                                                               
+<html>                                                                           
+<head>                                                                                        
+  <meta charset="utf-8">                                                                    
+</head>
+<body style="background:black;">
+  <div style="font-size: 3em; color: white;">One div</div>
+  <img class="bannerLogo  center-block hidden-xs" src="https://www.typescriptlang.org/assets/images/logo.svg">
+      
+
+  <script type="text/c++">
+    #include <belle/vue/dom.hxx>
+    #include <belle/vue/fx.hxx>
+
+    int main(int argc, char** argv) {
+      auto elems = belle::vue::get_elements_by_class_name("bannerLogo");
+      
+      auto logo = elems[0];
+      logo.setAttribute("src", "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg");
+
+
+      auto fade_in = std::make_shared<std::function<void()>>();
+      auto fade_out = [logo,fade_in](){ 
+        belle::vue::fx::fade_out(logo, *fade_in); 
+      };
+
+      *fade_in = [logo, fade_out](){ 
+        belle::vue::fx::fade_in(logo, fade_out); 
+      };
+
+      fade_out();
+    }
+  </script>
+</body>
+</html>
+ 
